@@ -1,0 +1,36 @@
+version: '3'
+services:
+
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    restart: always
+    environment:
+      MONGO_DATA_DIR: /data/db
+      MONGO_LOG_DIR: /var/log/mongodb/
+      MONGODB_USER: "test"
+      MONGODB_PASS: "test"
+    volumes:
+      - ./database/data/db:/data/db
+      - ./database/log:/var/log/mongodb/
+    ports:
+      - "27017:27017"
+    command: mongod --smallfiles --logpath=/var/log/mongodb/mongod.log
+
+  server:
+    container_name: wanted-test-server
+    restart: always
+    build:
+      context: server
+      dockerfile: Dockerfile
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_APP: ./run.py
+      PYTHONUNBUFFERED: 1
+      MONGO_URL: mongodb://mongodb:27017
+    image: wanted-test-server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server:/server
+
