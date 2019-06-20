@@ -49,6 +49,8 @@ class CompanySearchApi(Resource):
         tags = args.get('tags')
         print(search_word)
         print(tags)
+        if tags:
+            tags = tags.split('|')
         companies = Company.query \
             .filter(or_(Company.name_ko.contains(search_word),
                         Company.name_en.contains(search_word),
