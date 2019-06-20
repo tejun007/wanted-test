@@ -1,5 +1,5 @@
 # Docker for server
-FROM python:3.6.5-slim
+FROM python:3.6.5
 MAINTAINER tejunlee007@gmail.com
 
 # working directory
@@ -21,5 +21,6 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 # unblock port 5000 for the Flask app to run on
 EXPOSE 5000
 
-# set dataset to mongodb && execute the Flask app
+# execute the Flask app
 CMD python -u run.py
+

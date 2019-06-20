@@ -12,8 +12,9 @@ class Config(object):
     SWAGGER_UI_DOC_EXPANSION = 'list'
     RESTPLUS_MASK_SWAGGER = False
 
-    # Mongodb
-    MONGO_DB = "mongodb://mongodb:27017/"
+    # SQLALCHEMY
+    SQLALCHEMY_DATABASE_URI = 'mysql://test:test@mariadb/wanted?charset=utf8'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class TestConfig(Config):
@@ -21,6 +22,9 @@ class TestConfig(Config):
     DEVELOPMENT = True
     TESTING = True
     PROFILE = True
+
+    # SQLALCHEMY for test
+    SQLALCHEMY_DATABASE_URI = 'mysql://test:test@mariadb/wanted_test?charset=utf8'
 
 
 class ProductionConfig(Config):
