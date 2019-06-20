@@ -1,5 +1,9 @@
 from flask import Blueprint
-from flask_restplus import Api, Resource, reqparse, Model, fields
+from flask_restplus import Api, Resource, fields, reqparse
+from sqlalchemy import or_, and_
+
+from server.api.serializers import response_serializer
+from server.models.mariadb import Company
 
 v1 = Blueprint('api_v1', __name__)
 v1_api = Api(
@@ -9,7 +13,6 @@ v1_api = Api(
     description='Wanted의 coding assessment를 위한 API DOC 페이지 입니다.'
 )
 
-
 company_ns = v1_api.namespace('company', description='URL Pattern : /apis/v1/company/~')
 
 
@@ -18,10 +21,10 @@ class CompanySearchApi(Resource):
     parser = reqparse.RequestParser()
 
     # GET
-    parser.add_argument('search_word', type=str, location='args', help='회사명 ex) 원티드랩')
-    parser.add_argument('tags', type=str, location='args', help='태그 ex) tag1|tag2|tag3')
+    parser.add_argument('search_word', type=str, location='args', default='', help='회사명 ex) 원티드랩')
+    parser.add_argument('tags', type=str, location='args', default='', help='태그 ex) tag1|tag2|tag3')
 
-    # GET return
+    # GET return models
     company_detail = company_ns.model('CompanyDetail', {
         'id': fields.Integer(description='회사 아이디'),
         'name_ko': fields.String,
@@ -31,7 +34,7 @@ class CompanySearchApi(Resource):
         'tag_en': fields.String,
         'tag_ja': fields.String,
     })
-    company_list = company_ns.model('CompanyList', {
+    company_list = company_ns.clone('CompanyList', response_serializer, {
         'companies': fields.List(fields.Nested(company_detail))
     })
 
@@ -41,6 +44,19 @@ class CompanySearchApi(Resource):
     @company_ns.expect(parser)
     @company_ns.marshal_with(company_list)
     def get(self):
-        pass
-
-
+        args = self.parser.parse_args()
+        search_word = args.get('search_word')
+        tags = args.get('tags')
+        print(search_word)
+        print(tags)
+        companies = Company.query \
+            .filter(or_(Company.name_ko.contains(search_word),
+                        Company.name_en.contains(search_word),
+                        Company.name_ja.contains(search_word)),
+                    or_(Company.tag_ko.contains(tags),
+                        Company.tag_en.contains(tags),
+                        Company.tag_ja.contains(tags))).all()
+        print('companies', companies)
+        return dict(success=True,
+                    reason='SUCCESS',
+                    companies=[]), 200, dict()

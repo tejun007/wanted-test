@@ -14,6 +14,19 @@ services:
       - "3307:3306"
     command: ['mysqld', '--character-set-server=utf8', '--collation-server=utf8_general_ci']
 
+  mariadb_test:
+    image: mariadb:latest
+    container_name: "mariadb_test"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "wantedtest"
+      MYSQL_USER: "test"
+      MYSQL_PASSWORD: "test"
+    ports:
+      - "3308:3306"
+    command: ['mysqld', '--character-set-server=utf8', '--collation-server=utf8_general_ci']
+
   server:
     container_name: wanted-test-server
     restart: always
@@ -31,4 +44,4 @@ services:
       - ./server:/server
     depends_on:
       - mariadb
-
+      - mariadb_test
