@@ -62,6 +62,76 @@ Flask-restplus에서 swagger와 연동하여 docs페이지를 만들 수 있는 
 - url: http://0.0.0.0:5000/apis/v1
 - Reference: https://flask-restplus.readthedocs.io/en/stable/swagger.html
 
+API 명세 추가
+(만약 http://0.0.0.0:5000/apis/v1 으로 swagger명세 보기가 불편하시다면 아래의 명세를 참조해주세요)
+- GET /company/search : 회사명 혹은 태그로 회사를 검색할 수 있습니다.
+    - Parameters: 
+        - search_word string(query)	회사명 ex) 원티드랩
+        - tags string (query) 태그 ex) tag1|tag2|tag3
+
+    - Responses
+        - 200	Success Example Value \
+        Model
+            ```json
+                {
+                  "success": true,
+                  "reason": "string",
+                  "companies": [
+                    {
+                      "id": 0,
+                      "name_ko": "string",
+                      "name_en": "string",
+                      "name_ja": "string",
+                      "tag_ko": "string",
+                      "tag_en": "string",
+                      "tag_ja": "string"
+                    }
+                  ]
+                }
+            ```
+        - 400 Validation Error
+        - 500 Server Error
+
+- PUT /company/\<int:company_id\>/tags : 회사 태그정보 추가.
+    - Parameters: 
+        - company_id : 회사 고유 식별 번호
+    - data(form):
+        - tag_ko string(query)	한글 태그 ex) 원티드랩
+        - tag_en string (query) 영문 태그 ex) tag1|tag2|tag3
+        - tag_ja string (query) 일본어 태그 ex) タグ_4|タグ_20|タグ_16
+    - Responses
+        - 200	Success Example Value \
+        Model
+            ```json
+                {
+                  "success": true,
+                  "reason": "string"
+                }
+            ```
+        - 204 No Content 
+        - 400 Validation Error
+        - 500 Server Error
+
+- DELETE /company/\<int:company_id\>/tags : 회사 태그정보 삭제.
+    - Parameters: 
+        - company_id : 회사 고유 식별 번호
+    - data(form):
+        - tag_ko string(query)	한글 태그 ex) 원티드랩
+        - tag_en string (query) 영문 태그 ex) tag1|tag2|tag3
+        - tag_ja string (query) 일본어 태그 ex) タグ_4|タグ_20|タグ_16
+    - Responses
+        - 200	Success Example Value \
+        Model
+            ```json
+                {
+                  "success": true,
+                  "reason": "string"
+                }
+            ```
+        - 204 No Content 
+        - 400 Validation Error
+        - 500 Server Error
+
 ##Pytest
 아래의 명령어로 만들어진 APIS들에 대해 pytest를 진행 할 수 있습니다.
 
