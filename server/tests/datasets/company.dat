@@ -1,0 +1,22 @@
+{
+    "company": [
+        {
+            "id": 1,
+            "name_ko": "원티드랩",
+            "name_en": "Wantedlab",
+            "name_ja": "",
+            "tag_ko": "태그_4|태그_20|태그_16",
+            "tag_en": "tag_4|tag_20|tag_16",
+            "tag_ja": "タグ_4|タグ_20|タグ_16"
+        },
+        {
+            "id": 2,
+            "name_ko": "테드 컴퍼니",
+            "name_en": "Ted Company",
+            "name_ja": "",
+            "tag_ko": "테드_4|테드_20|테드_16",
+            "tag_en": "ted_4|ted_20|ted_16",
+            "tag_ja": "テッド_4|テッド_20|テッド_16"
+        }
+    ]
+}

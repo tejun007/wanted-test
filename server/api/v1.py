@@ -16,7 +16,7 @@ v1_api = Api(
 company_ns = v1_api.namespace('company', description='URL Pattern : /apis/v1/company/~')
 
 
-@company_ns.route('/<int:company_id>/tags')
+@company_ns.route('/<int:company_id>/tags', endpoint='company_tags_api')
 class CompanyTagsApi(Resource):
     parser = reqparse.RequestParser()
 
@@ -44,9 +44,9 @@ class CompanyTagsApi(Resource):
         tag_ja = args.get('tag_ja').split('|') if args.get('tag_ja') else []
 
         try:
-            company = Company.query.filter(Company.id == company_id).one()
+            company = Company.query.filter(Company.id == company_id).first()
             if not company:
-                return dict(success=False, reason='NoCompanyFound'), 204, dict()
+                return dict(success=False, reason='NoCompanyFound'), 404, dict()
             if tag_ko:
                 prev_tag_ko = company.tag_ko.split('|') if company.tag_ko else []
                 updated_tag_ko = '|'.join(list(dict.fromkeys(prev_tag_ko + tag_ko)))
@@ -86,9 +86,9 @@ class CompanyTagsApi(Resource):
         tag_ja = args.get('tag_ja').split('|') if args.get('tag_ja') else []
 
         try:
-            company = Company.query.filter(Company.id == company_id).one()
+            company = Company.query.filter(Company.id == company_id).first()
             if not company:
-                return dict(success=False, reason='NoCompanyFound'), 204, dict()
+                return dict(success=False, reason='NoCompanyFound'), 404, dict()
             if tag_ko:
                 prev_tag_ko = company.tag_ko.split('|') if company.tag_ko else []
                 updated_tag_ko = '|'.join([tag for tag in prev_tag_ko if tag not in tag_ko])
@@ -110,7 +110,7 @@ class CompanyTagsApi(Resource):
             return dict(success=False, reason='ServerError'), 500, dict()
 
 
-@company_ns.route('/search')
+@company_ns.route('/search', endpoint='company_search_api')
 class CompanySearchApi(Resource):
     parser = reqparse.RequestParser()
 
@@ -148,27 +148,27 @@ class CompanySearchApi(Resource):
         tags = tags.split('|') if tags else []
 
         if not search_word and not tags:
-            return dict(success=True,
+            return dict(success=False,
                         reason='ParamsMissing',
                         companies=[]), 400, dict()
 
         try:
             company_query = Company.query
+            query_filter = []
             if search_word:
-                company_query = company_query \
-                    .filter(or_(Company.name_ko.contains(search_word),
-                                Company.name_en.contains(search_word),
-                                Company.name_ja.contains(search_word)))
+                query_filter.append(or_(Company.name_ko.contains(search_word),
+                                        Company.name_en.contains(search_word),
+                                        Company.name_ja.contains(search_word)))
             if tags:
                 company_tag_ko_filter = [Company.tag_ko.contains(tag) for tag in tags]
                 company_tag_en_filter = [Company.tag_en.contains(tag) for tag in tags]
                 company_tag_ja_filter = [Company.tag_ja.contains(tag) for tag in tags]
 
-                company_query = company_query \
-                    .filter(or_(*company_tag_ko_filter,
-                                *company_tag_en_filter,
-                                *company_tag_ja_filter))
-
+                query_filter.append(or_(*company_tag_ko_filter,
+                                        *company_tag_en_filter,
+                                        *company_tag_ja_filter))
+            if query_filter:
+                company_query = company_query.filter(or_(*query_filter))
             companies = company_query.all()
 
             return dict(success=True,
@@ -185,6 +185,6 @@ class CompanySearchApi(Resource):
                             ) for company in companies]), 200, dict()
         except Exception as e:
             print(e)
-            return dict(success=True,
+            return dict(success=False,
                         reason='ServerError',
                         companies=[]), 500, dict()
