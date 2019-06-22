@@ -6,13 +6,19 @@ This is a repository for wanted's coding assessment
 GITHUB URL: https://github.com/tejun007/wanted-test
 
 
-실행방법:
+## 실행방법
 
 Docker로 구현하였으며, 실행을 위해서 아래의 실행 명령어로 이미지 생성 & container build를 할 수 있습니다.
 
 ```bash
 $ cd <project_folder>
 $ docker-compose up 
+```
+
+아래의 명령어로 container 를 종료 시킬 수 있습니다
+```bash
+$ cd <project_folder>
+$ docker-compose down 
 ```
 
 Docker container를 실행 한 후,
@@ -50,8 +56,15 @@ $ docker exec -it wanted-test-server bash
 
 ```
 
-API: Docker container를 실행 한 후, 아래의 주소로 가시면 API 명세 페이지를 볼 수 있습니다.
+##API 
+Docker container를 실행 한 후, 아래의 주소로 가시면 API 명세 페이지를 볼 수 있습니다.
 Flask-restplus에서 swagger와 연동하여 docs페이지를 만들 수 있는 decorator 및 소스코드를 추가하여 만들었습니다.
 - url: http://0.0.0.0:5000/apis/v1
 - Reference: https://flask-restplus.readthedocs.io/en/stable/swagger.html
 
+##Pytest
+아래의 명령어로 만들어진 APIS들에 대해 pytest를 진행 할 수 있습니다.
+```bash
+$ cd <project_folder>/server
+$ py.test 
+```
