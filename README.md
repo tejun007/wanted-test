@@ -64,7 +64,14 @@ Flask-restplus에서 swagger와 연동하여 docs페이지를 만들 수 있는 
 
 ##Pytest
 아래의 명령어로 만들어진 APIS들에 대해 pytest를 진행 할 수 있습니다.
+
+Local PC의 프로젝트 폴더에서는 아래와 같이 실행할 수 있습니다.
 ```bash
 $ cd <project_folder>/server
 $ py.test 
+```
+wanted-test-server container 내부에서는 아래와 같이 실행할 수 있습니다.
+```bash
+$ docker exec -it wanted-test-server bash
+/server# py.test 
 ```
