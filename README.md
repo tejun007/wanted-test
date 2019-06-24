@@ -56,7 +56,7 @@ $ docker exec -it wanted-test-server bash
 
 ```
 
-##API 
+## API 
 Docker container를 실행 한 후, 아래의 주소로 가시면 API 명세 페이지를 볼 수 있습니다.
 Flask-restplus에서 swagger와 연동하여 docs페이지를 만들 수 있는 decorator 및 소스코드를 추가하여 만들었습니다.
 - url: http://0.0.0.0:5000/apis/v1
@@ -64,7 +64,7 @@ Flask-restplus에서 swagger와 연동하여 docs페이지를 만들 수 있는 
 
 API 명세 추가
 (만약 http://0.0.0.0:5000/apis/v1 으로 swagger명세 보기가 불편하시다면 아래의 명세를 참조해주세요)
-- GET /company/search : 회사명 혹은 태그로 회사를 검색할 수 있습니다.
+- GET /apis/v1/company/search : 회사명 혹은 태그로 회사를 검색할 수 있습니다.
     - Parameters: 
         - search_word string(query)	회사명 ex) 원티드랩
         - tags string (query) 태그 ex) tag1|tag2|tag3
@@ -92,7 +92,7 @@ API 명세 추가
         - 400 Validation Error
         - 500 Server Error
 
-- PUT /company/\<int:company_id\>/tags : 회사 태그정보 추가.
+- PUT /apis/v1/company/\<int:company_id\>/tags : 회사 태그정보 추가.
     - Parameters: 
         - company_id : 회사 고유 식별 번호
     - data(form):
@@ -112,7 +112,7 @@ API 명세 추가
         - 400 Validation Error
         - 500 Server Error
 
-- DELETE /company/\<int:company_id\>/tags : 회사 태그정보 삭제.
+- DELETE /apis/v1/company/\<int:company_id\>/tags : 회사 태그정보 삭제.
     - Parameters: 
         - company_id : 회사 고유 식별 번호
     - data(form):
