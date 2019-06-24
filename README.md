@@ -31,7 +31,7 @@ $ docker exec -it wanted-test-server bash
 
 # migration version을 생성 후 db에 model의 변화를 적용할 경우 
 # (가장 최신 소스코드는 이 부분 부터 사용하면됩니다.) 
-/server# python database/manage.py db migrate
+/server# python database/manage.py db upgrade 
 ```
 
 만약 migration version 정보가 없거나 새로 model의 소스코드가 변경되었을 경우
