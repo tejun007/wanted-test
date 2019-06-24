@@ -52,7 +52,7 @@ database에 default test dataset 삽입하기
 $ docker exec -it wanted-test-server bash
 
 # dataset initializer 실행
-/server# python database/init_mariadb_dataset.py
+/server# ./database/init_database.sh 
 
 ```
 

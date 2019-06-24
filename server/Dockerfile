@@ -22,5 +22,6 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 EXPOSE 5000
 
 # execute the Flask app
-CMD python -u run.py
+CMD chmod +x /server/database/init_database.sh  \
+    && python -u run.py
 
