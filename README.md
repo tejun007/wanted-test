@@ -133,7 +133,7 @@ API 명세 추가
         - 500 Server Error
 
 ## Pytest
-아래의 명령어로 만들어진 APIS들에 대해 pytest를 진행 할 수 있습니다.
+아래의 명령어로 만들어진 API들에 대해 pytest를 진행 할 수 있습니다.
 
 Local PC의 프로젝트 폴더에서는 아래와 같이 실행할 수 있습니다.
 ```bash
